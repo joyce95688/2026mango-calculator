@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>總金額試算</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #e8f5e9;
+            --accent: #e65100;
+            --bg: #f9fbe7;
+            --card-bg: #ffffff;
+            --text: #37474f;
+            --border: #dce775;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 20px 10px;
+        }
+
+        .calculator-container {
+            max-width: 650px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(55, 71, 79, 0.08);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 24px 15px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .product-table th {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .product-table th.num-col, .product-table td.num-col {
+            text-align: right;
+        }
+        
+        .product-table th.center-col, .product-table td.center-col {
+            text-align: center;
+        }
+
+        .product-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f4c3;
+            font-size: 15px;
+            vertical-align: middle;
+        }
+
+        .product-table tr:hover {
+            background-color: #f9fbe7;
+        }
+
+        .item-name {
+            font-weight: 500;
+        }
+
+        .price-tag {
+            color: #546e7a;
+        }
+
+        select {
+            padding: 6px 12px;
+            font-size: 15px;
+            border: 1px solid #c5e1a5;
+            border-radius: 6px;
+            background-color: #fff;
+            color: var(--text);
+            cursor: pointer;
+            outline: none;
+            width: 70px;
+            transition: border-color 0.2s;
+        }
+
+        select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+        }
+
+        .subtotal-amount {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .summary-section {
+            background-color: #f1f8e9;
+            padding: 24px;
+            border-top: 2px solid var(--border);
+        }
+
+        .total-paragraph {
+            text-align: center;
+            font-size: 16px;
+            color: #546e7a;
+            margin-bottom: 8px;
+        }
+
+        .total-paragraph strong {
+            font-size: 28px;
+            color: var(--accent);
+            margin-left: 8px;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: #90a4ae;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator-container">
+    <div class="header">
+        <h1>總金額試算</h1>
+    </div>
+
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>品項</th>
+                <th class="num-col">單價</th>
+                <th class="center-col">數量</th>
+                <th class="num-col">小計</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-price="1000">
+                <td class="item-name">A全愛文</td>
+                <td class="num-col price-tag">$1,000</td>
+                <td class="center-col">
+                    <select class="qty-select" onchange="calculate()"></select>
+                </td>
+                <td class="num-col subtotal-amount">$0</td>
+            </tr>
+            <tr data-price="1000">
+                <td class="item-name">A全黑香</td>
+                <td class="num-col price-tag">$1,000</td>
+                <td class="center-col">
+                    <select class="qty-select" onchange="calculate()"></select>
+                </td>
+                <td class="num-col subtotal-amount">$0</td>
+            </tr>
+            <tr data-price="800">
+                <td class="item-name">B全玉文</td>
+                <td class="num-col price-tag">$800</td>
+                <td class="center-col">
+                    <select class="qty-select" onchange="calculate()"></select>
+                </td>
+                <td class="num-col subtotal-amount">$0</td>
+            </tr>
+            <tr data-price="800">
+                <td class="item-name">B全金煌</td>
+                <td class="num-col price-tag">$800</td>
+                <td class="center-col">
+                    <select class="qty-select" onchange="calculate()"></select>
+                </td>
+                <td class="num-col subtotal-amount">$0</td>
+            </tr>
+            <tr data-price="900">
+                <td class="item-name">綜合4種</td>
+                <td class="num-col price-tag">$900</td>
+                <td class="center-col">
+                    <select class="qty-select" onchange="calculate()"></select>
+                </td>
+                <td class="num-col subtotal-amount">$0</td>
+            </tr>
+            <tr data-price="1000">
+                <td class="item-name">綜合A+A</td>
+                <td class="num-col price-tag">$1,000</td>
+                <td class="center-col">
+                    <select class="qty-select" onchange="calculate()"></select>
+                </td>
+                <td class="num-col subtotal-amount">$0</td>
+            </tr>
+            <tr data-price="900">
+                <td class="item-name">綜合A+B</td>
+                <td class="num-col price-tag">$900</td>
+                <td class="center-col">
+                    <select class="qty-select" onchange="calculate()"></select>
+                </td>
+                <td class="num-col subtotal-amount">$0</td>
+            </tr>
+            <tr data-price="900">
+                <td class="item-name">綜合2A+B</td>
+                <td class="num-col price-tag">$900</td>
+                <td class="center-col">
+                    <select class="qty-select" onchange="calculate()"></select>
+                </td>
+                <td class="num-col subtotal-amount">$0</td>
+            </tr>
+            <tr data-price="900">
+                <td class="item-name">綜合A+2B</td>
+                <td class="num-col price-tag">$900</td>
+                <td class="center-col">
+                    <select class="qty-select" onchange="calculate()"></select>
+                </td>
+                <td class="num-col subtotal-amount">$0</td>
+            </tr>
+            <tr data-price="800">
+                <td class="item-name">綜合B+B</td>
+                <td class="num-col price-tag">$800</td>
+                <td class="center-col">
+                    <select class="qty-select" onchange="calculate()"></select>
+                </td>
+                <td class="num-col subtotal-amount">$0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="summary-section">
+        <!-- 獨立的段落列出加總金額 -->
+        <p class="total-paragraph">您本次選擇的商品總數量為 <span id="total-qty" style="font-weight: bold; color: var(--primary);">0</span> 件</p>
+        <p class="total-paragraph">本訂單試算之應付總金額為：<strong>NT$ <span id="grand-total">0</span></strong></p>
+        <div class="footer-note">※ 調整上方數量選單，總金額將會即時自動更新。</div>
+    </div>
+</div>
+
+<script>
+    // 動態產生 0~5 的下拉選單選項
+    document.addEventListener("DOMContentLoaded", function() {
+        const selects = document.querySelectorAll('.qty-select');
+        selects.forEach(select => {
+            for (let i = 0; i <= 5; i++) {
+                let option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                select.appendChild(option);
+            }
+        });
+        calculate(); // 初始計算
+    });
+
+    function calculate() {
+        let grandTotal = 0;
+        let totalQty = 0;
+        const rows = document.querySelectorAll('.product-table tbody tr');
+
+        rows.forEach(row => {
+            const price = parseInt(row.getAttribute('data-price'));
+            const qty = parseInt(row.querySelector('.qty-select').value) || 0;
+            const subtotal = price * qty;
+            
+            grandTotal += subtotal;
+            totalQty += qty;
+
+            // 更新單項小計
+            row.querySelector('.subtotal-amount').textContent = '$' + subtotal.toLocaleString();
+        });
+
+        // 更新獨立段落的總數量與總金額
+        document.getElementById('total-qty').textContent = totalQty;
+        document.getElementById('grand-total').textContent = grandTotal.toLocaleString();
+    }
+</script>
+
+</body>
+</html>
